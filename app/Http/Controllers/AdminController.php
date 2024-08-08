@@ -9,11 +9,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $data['getRecords'] = User::where('user_type', 1)
-            ->where('is_delete', 0)
-            ->get();
+        $data['getRecords'] = User::getAdmin($request);
         $data['header_title'] = 'Admin List';
         return view('admin.admin.list', $data);
     }
@@ -25,6 +23,10 @@ class AdminController extends Controller
     }
     public function insert(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email|unique:users',
+        ]);
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -42,6 +44,9 @@ class AdminController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'email' => 'required|email|unique:users,email,'.$id
+        ]);
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;

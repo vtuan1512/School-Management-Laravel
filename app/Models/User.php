@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
@@ -44,6 +45,36 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function getAdmin(\Illuminate\Http\Request $request)
+    {
+        $query = self::select('users.*')
+            ->where('user_type', '=', 1)
+            ->where('is_delete', '=', 0);
+
+        $email = $request->get('email');
+        $name = $request->get('name');
+        $date = $request->get('date');
+        if (!empty($email)) {
+            $query = $query->where('email', 'like', '%' . $email . '%');
+        }
+        if (!empty($name)) {
+            $query = $query->where('name', 'like', '%' . $name . '%');
+        }
+        if (!empty($date)) {
+            $query = $query->whereDate('created_at', $date);
+        }
+        $results = $query->get();
+
+        // Check if there are no results and show a message if true
+        if ($results->isEmpty()) {
+            echo "No data found.";
+        }
+
+        $admins = $query->orderBy('id', 'desc')->paginate(10);
+        return $admins;
+    }
+
     static public function getEmailSingle($email)
     {
         $user = User::where('email', $email)->first();

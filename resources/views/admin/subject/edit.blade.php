@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Edit Admin</h1>
+                    <h1>Edit Subject</h1>
                 </div>
             </div>
         </div>
@@ -20,25 +20,27 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <form method="POST" action="">
-                        {{ csrf_field() }}
+                            {{ csrf_field() }}
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" name="name" value="{{old('name',$getRecord->name)}}" required placeholder="Enter name">
+                                    <label>Subject Name</label>
+                                    <input type="text" class="form-control" name="name" value="{{$getRecord->name}}" required placeholder="Subject Name">
                                 </div>
                                 <div class="form-group">
-                                    <label>Email address</label>
-                                    <input type="email" class="form-control" name="email" value="{{old('email',$getRecord->email)}}" required  placeholder="Enter email">
-                                    <div style="color: red;">
-                                        {{ $errors->first('email') }}
-                                    </div>
+                                    <label> Subject Type</label>
+                                    <select class="form-control" name="type" required>
+                                        <option value="">Select Type</option>
+                                        <option {{($getRecord->type=='theory')?'selected':'' }} value="theory">Theory</option>
+                                        <option {{($getRecord->type=='practical')?'selected':'' }} value="practical">Practical</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="text" class="form-control" name="password" placeholder="Password">
-                                    <p>Do you want to change password so Please add new password</p>
+                                    <label>Status</label>
+                                    <select class="form-control" name="status">
+                                        <option {{($getRecord->type==0)?'selected':'' }} value="0">Active</option>
+                                        <option {{($getRecord->type==1)?'selected':'' }} value="1">Inactive</option>
+                                    </select>
                                 </div>
-                            </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
