@@ -8,11 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>My Student Subject <span style="color: red;">({{$getUser->name}} {{$getUser->last_name}})</span> </h1>
+                    <h1>Exam Timetable <span style="color: blue;">({{ $getStudent->name }} {{ $getStudent->last_name }})</span></h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -21,44 +22,47 @@
                 <!-- /.col -->
                 <div class="col-md-12">
                     @include('message')
-
-                    <!-- /.card -->
-
+                    @foreach($getRecords as $value)
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Student Subject</h3>
+                            <h3 class="card-title" style="color: red;">{{$value['exam_name']}}</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
-                            @if($getRecord->isEmpty())
-                            <p class="text-center" style="color: red;">No data found</p>
-                            @else
-
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Subject Name</th>
-                                        <th>Subject Type</th>
-                                        <th>Action</th>
+                                        <th>Day</th>
+                                        <th>Date</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Room Number</th>
+                                        <th>Full Mark</th>
+                                        <th>Pass Mark</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($getRecord as $index => $value)
+
+                                    @foreach($value['exam'] as $valueS)
                                     <tr>
-                                        <td>{{ $index + 1}}</td>
-                                        <td>{{$value->subject_name}}</td>
-                                        <td>{{$value->subject_type}}</td>
-                                        <td>
-                                            <a class="btn btn-warning" href="{{url('parent/my_student/subject/class_timetable/'.$value->class_id.'/'.$value->subject_id.'/'.$getUser->id)}}">My Class Timetable</a>
-                                        </td>
+
+                                        <td>{{$valueS['subject_name']}}</td>
+                                        <td>{{ date('l',strtotime($valueS['exam_date']))}}</td>
+                                        <td>{{ date('d:m Y',strtotime($valueS['exam_date']))}}</td>
+                                        <td>{{ date('h:i A',strtotime($valueS['start_time']))}}</td>
+                                        <td>{{ date('h:i A',strtotime($valueS['end_time']))}}</td>
+                                        <td>{{$valueS['room_number']}}</td>
+                                        <td>{{$valueS['full_marks']}}</td>
+                                        <td>{{$valueS['passing_mark']}}</td>
                                     </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
                         </div>
-                        @endif
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>

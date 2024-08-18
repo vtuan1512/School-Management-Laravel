@@ -79,8 +79,10 @@
                                         <td>{{ $record->weight }}</td>
 
                                         <td>{{ date('d-m-Y H:i A',strtotime( $record->created_at)) }}</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="{{url('parent/my_student/subject/'. $record->id)}}">Subject</a>
+                                        <td style="min-width: 220px;">
+                                            <a class="btn btn-success btn-sm" href="{{url('parent/my_student/subject/'. $record->id)}}">Subject</a>
+                                            <a class="btn btn-warning btn-sm" href="{{url('parent/my_student/exam_timetable/'. $record->id)}}">Exam Timetable</a>
+
                                         </td>
                                     </tr>
                                     @endforeach
